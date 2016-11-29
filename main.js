@@ -15,7 +15,7 @@ window.addEventListener('load', function(e) {
     Q.touch(Q.SPRITE_ALL);
     Q.Sprite.extend("Player", {
         init: function(p) {
-            this._super(p, { asset: "player.png", x: 50, y: 50,  stepDistance: 64, stepDelay: .3, fireDelay:1, d:0 }); //fireDelay in seconds
+            this._super(p, { asset: "player.png", x: 128, y: 128,  stepDistance: 64, stepDelay: .3, fireDelay:1, d:0 }); //fireDelay in seconds
             this.add('2d, stepControls');
             this.on("touch");
         },
@@ -33,13 +33,13 @@ window.addEventListener('load', function(e) {
 
 
     Q.scene("level1", function(stage) {
-        Q.stageTMX("sample_map.tmx", stage);
+        Q.stageTMX("testmap.tmx", stage);
         var player = stage.insert(new Q.Player());
         stage.add("viewport").follow(player);
 
     });
 
-    Q.loadTMX("sample_map.tmx, player.png", function() {
+    Q.loadTMX("testmap.tmx, player.png", function() {
         Q.stageScene("level1");
     });
 })
