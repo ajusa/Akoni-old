@@ -15,7 +15,7 @@ window.addEventListener('load', function(e) {
     Q.touch(Q.SPRITE_ALL);
     Q.Sprite.extend("Player", {
         init: function(p) {
-            this._super(p, { asset: "player.png", x: 32, y:32,  stepDistance: 64, stepDelay: .3, fireDelay:1, d:0 }); //fireDelay in seconds
+            this._super(p, { sheet: "chars", frame: 0, x: 12*64+32, y: 12*64+32, stepDistance: 64, stepDelay: .3, fireDelay: 1, d: 0 }); //fireDelay in seconds
             this.add('2d, stepControls');
             this.on("touch");
         },
@@ -23,7 +23,20 @@ window.addEventListener('load', function(e) {
             console.log("Hello")
         },
         step: function(dt) {
-            if (Q.inputs['fire'] && this.p.d>this.p.fireDelay) {
+            if (Q.inputs['fire'] && this.p.d > this.p.fireDelay) {
+                console.log("help") //code on fire
+                this.p.d = 0;
+            }
+            this.p.d += dt;
+        },
+    });
+    Q.Sprite.extend("Projectile", {
+        init: function(p) {
+            this._super(p, { asset: "player.png", x: 32, y: 32, }); //fireDelay in seconds
+            this.add('2d');
+        },
+        step: function(dt) {
+            if (Q.inputs['fire'] && this.p.d > this.p.fireDelay) {
                 console.log("help") //code on fire
                 this.p.d = 0;
             }
@@ -39,7 +52,16 @@ window.addEventListener('load', function(e) {
 
     });
 
-    Q.loadTMX("testmap.tmx, player.png", function() {
+    Q.loadTMX("testmap.tmx, player.png, roguelikeChar_transparent.png", function() {
+        Q.sheet("chars",
+            "roguelikeChar_transparent.png", {
+                tilew: 64, // Each tile is 40 pixels wide
+                tileh: 64, // and 40 pixels tall
+                spacingX: 4,
+                spacingY: 4,
+                sx: 0, // start the sprites at x=0
+                sy: 748 // and y=0
+            });
         Q.stageScene("level1");
     });
 })
