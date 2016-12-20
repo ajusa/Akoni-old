@@ -15,7 +15,7 @@ window.addEventListener('load', function(e) {
     Q.touch(Q.SPRITE_ALL);
     Q.Sprite.extend("Player", {
         init: function(p) {
-            this._super(p, { asset: "player.png", x: 128, y: 128,  stepDistance: 64, stepDelay: .3, fireDelay:1, d:0 }); //fireDelay in seconds
+            this._super(p, { asset: "player.png", x: 32, y:32,  stepDistance: 64, stepDelay: .3, fireDelay:1, d:0 }); //fireDelay in seconds
             this.add('2d, stepControls');
             this.on("touch");
         },

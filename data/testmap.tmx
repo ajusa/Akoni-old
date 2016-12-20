@@ -4,6 +4,9 @@
   <image source="../images/roguelikeSheet_transparent.png" width="3648" height="1984"/>
  </tileset>
  <layer name="Grass" width="20" height="20">
+  <properties>
+   <property name="type" type="int" value="0"/>
+  </properties>
   <data>
    <tile gid="6"/>
    <tile gid="6"/>
@@ -408,6 +411,9 @@
   </data>
  </layer>
  <layer name="Water" width="20" height="20">
+  <properties>
+   <property name="collision" value="true"/>
+  </properties>
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -812,6 +818,9 @@
   </data>
  </layer>
  <layer name="Objects" width="20" height="20">
+  <properties>
+   <property name="collision" value="true"/>
+  </properties>
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
