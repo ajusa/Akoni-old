@@ -1,4 +1,5 @@
 var Q;
+var player;
 //fireDelay should be a component, so that we can have enemies use it as well
 window.addEventListener('load', function(e) {
     Q = Quintus()
@@ -11,11 +12,19 @@ window.addEventListener('load', function(e) {
         87: "up",
         83: "down"
     });
+    Q.SPRITE_NONE = 0;
+    Q.SPRITE_DEFAULT = 1;
+    Q.SPRITE_PARTICLE = 2;
+    Q.SPRITE_ACTIVE = 4;
+    Q.SPRITE_FRIENDLY = 8;
+    Q.SPRITE_ENEMY = 16;
+    Q.SPRITE_UI = 32;
+    Q.SPRITE_ALL = 0xFFFF;
     Q.gravityY = 0;
     Q.touch(Q.SPRITE_ALL);
     Q.Sprite.extend("Player", {
         init: function(p) {
-            this._super(p, { sheet: "chars", frame: 0, x: 12*64+32, y: 12*64+32, stepDistance: 64, stepDelay: .3, fireDelay: 1, d: 0 }); //fireDelay in seconds
+            this._super(p, { sheet: "chars", frame: 0, x: 12 * 64 + 32, y: 12 * 64 + 32, stepDistance: 64, stepDelay: .3, fireDelay: 1, d: 0 }); //fireDelay in seconds
             this.add('2d, stepControls');
             this.on("touch");
         },
@@ -25,6 +34,7 @@ window.addEventListener('load', function(e) {
         step: function(dt) {
             if (Q.inputs['fire'] && this.p.d > this.p.fireDelay) {
                 console.log("help") //code on fire
+                this.stage.insert(new Q.Projectile({ x: this.p.x, y: this.p.y }));
                 this.p.d = 0;
             }
             this.p.d += dt;
@@ -32,22 +42,17 @@ window.addEventListener('load', function(e) {
     });
     Q.Sprite.extend("Projectile", {
         init: function(p) {
-            this._super(p, { asset: "player.png", x: 32, y: 32, }); //fireDelay in seconds
+            this._super(p, { asset: "player.png" }); //fireDelay in seconds
             this.add('2d');
+            console.log(Math.atan2(this.p.y, this.p.x)* 180/Math.PI)
         },
-        step: function(dt) {
-            if (Q.inputs['fire'] && this.p.d > this.p.fireDelay) {
-                console.log("help") //code on fire
-                this.p.d = 0;
-            }
-            this.p.d += dt;
-        },
+        step: function(dt) {this.p.collisionMask = 0;}
     });
 
 
     Q.scene("level1", function(stage) {
         Q.stageTMX("testmap.tmx", stage);
-        var player = stage.insert(new Q.Player());
+        player = stage.insert(new Q.Player());
         stage.add("viewport").follow(player);
 
     });
